@@ -31,4 +31,4 @@ for line in file_lines:
             pass
     except tweepy.TweepError as e:
         print(e.reason)
-    sleep(120)
+    sleep(3600)
