@@ -1,4 +1,7 @@
 import tweepy
+import redis
+import sys
+
 from time import sleep
 from credentials import *
 
@@ -12,6 +15,12 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
 
+key = 'line'
+r = redis.from_url(os.environ.get("REDIS_URL"))
+line_index = r.get(key)
+if not line:
+	line = 0
+
 # Open text file endlessdisco.txt for reading
 my_file = open('endlessdisco.txt', 'r')
 
@@ -21,14 +30,21 @@ file_lines = my_file.readlines()
 # Close file
 my_file.close()
 
-# Create a for loop to iterate over file_lines
-for line in file_lines:
-    try:
-        print(line)
-        if line != '\n':
-            api.update_status(line)
-        else:
-            pass
-    except tweepy.TweepError as e:
-        print(e.reason)
-    sleep(1800)
+# Check if there are still lines to write
+if line_index + 1 > len(file_lines):
+	sys.exit("Not enought lines")
+
+# Get the right line to send
+line = file_lines[line_index]
+
+# Try to send the line to Twitter
+try:
+    print(line)
+    if line != '\n':
+        api.update_status(line)
+		r.set(key, line_index + 1) # Write the index to the DB
+    else:
+        pass
+except tweepy.TweepError as e:
+    print(e.reason)
+
