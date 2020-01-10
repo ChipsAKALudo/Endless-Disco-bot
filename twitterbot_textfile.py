@@ -19,8 +19,8 @@ api = tweepy.API(auth)
 key = 'line'
 r = redis.from_url(os.environ.get("REDIS_URL"))
 line_index = r.get(key)
-if not line:
-    line = 0
+if not line_index:
+    line_index = 0
 
 # Open text file endlessdisco.txt for reading
 my_file = open('endlessdisco.txt', 'r')
