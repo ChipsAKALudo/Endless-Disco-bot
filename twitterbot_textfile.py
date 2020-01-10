@@ -43,8 +43,9 @@ try:
     print(line)
     if line != '\n':
         api.update_status(line)
-        r.set(key, line_index + 1) # Write the index to the DB
     else:
         pass
 except tweepy.TweepError as e:
     print(e.reason)
+
+r.set(key, line_index + 1) # Write the index to the DB
