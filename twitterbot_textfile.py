@@ -22,6 +22,9 @@ line_index = r.get(key)
 if not line_index:
     line_index = 0
 
+line_index = int(line_index)
+
+
 # Open text file endlessdisco.txt for reading
 my_file = open('endlessdisco.txt', 'r')
 
