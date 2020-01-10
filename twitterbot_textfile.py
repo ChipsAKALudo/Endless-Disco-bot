@@ -19,7 +19,7 @@ key = 'line'
 r = redis.from_url(os.environ.get("REDIS_URL"))
 line_index = r.get(key)
 if not line:
-	line = 0
+    line = 0
 
 # Open text file endlessdisco.txt for reading
 my_file = open('endlessdisco.txt', 'r')
@@ -32,7 +32,7 @@ my_file.close()
 
 # Check if there are still lines to write
 if line_index + 1 > len(file_lines):
-	sys.exit("Not enought lines")
+    sys.exit("Not enought lines")
 
 # Get the right line to send
 line = file_lines[line_index]
@@ -42,9 +42,8 @@ try:
     print(line)
     if line != '\n':
         api.update_status(line)
-		r.set(key, line_index + 1) # Write the index to the DB
+        r.set(key, line_index + 1) # Write the index to the DB
     else:
         pass
 except tweepy.TweepError as e:
     print(e.reason)
-
