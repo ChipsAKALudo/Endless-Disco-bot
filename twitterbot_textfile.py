@@ -1,6 +1,7 @@
 import tweepy
 import redis
 import sys
+import os
 
 from time import sleep
 from credentials import *
